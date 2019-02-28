@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from accounts.models import User
 from system.models import News, Slider
 from mall.models import Product
 from utils import constants
@@ -12,10 +13,11 @@ def index(request):
     """ 首页 """
     user = request.user
     if not user.is_authenticated:
-        user = authenticate(username='135000000', password='12345678')
+        user = User.objects.get(username='13500000000')
+        # print(user)
         if user:
             login(request, user)
-            messages.success(request, '欢迎回来')
+            messages.success(request, '自动登陆成功')
     # 新闻列表
     news_list = News.objects.filter(is_valid=True, is_top=True)
     # 轮播图列表

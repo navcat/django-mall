@@ -36,15 +36,15 @@ def sign_out(request):
     logout(request)
     # 退出登录后跳转到首页
     messages.success(request, '欢迎下次再来!')
-    return redirect(reverse('index'))
+    return redirect(reverse('mall:product_list'))
 
 
 def sign_up(request, form_class=RegisterForm):
     """ 用户注册"""
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         form = form_class(data=request.POST, request=request)
-        print(form.as_p())
+        # print(form.as_p())
         if form.is_valid():
             user = form.save()
             login(request, user)
