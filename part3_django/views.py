@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -8,6 +10,12 @@ from utils import constants
 
 def index(request):
     """ 首页 """
+    user = request.user
+    if not user.is_authenticated:
+        user = authenticate(username='135000000', password='12345678')
+        if user:
+            login(request, user)
+            messages.success(request, '欢迎回来')
     # 新闻列表
     news_list = News.objects.filter(is_valid=True, is_top=True)
     # 轮播图列表

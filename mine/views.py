@@ -100,7 +100,7 @@ def order_submit(request):
     default_addr = request.user.default_addr
     if not default_addr:
         # 请先完善地址信息
-        messages.danger(request, '请先完善地址信息')
+        messages.error(request, '请先完善地址信息')
         return redirect('accounts:address_list')
 
     # 查找用户的购物车信息

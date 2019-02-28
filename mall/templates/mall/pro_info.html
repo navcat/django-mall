@@ -168,6 +168,7 @@
         href="javascript:;"
         class="weui-tabbar__item yellow-color open-popup"
         data-target="#join_cart"
+        data-url="{% url 'mine:cart_add' object.uid %}"
         id="id_add_to_cart"
       >
         <p class="promotion-foot-menu-label">加入购物车</p>
@@ -297,6 +298,20 @@
           }
         })
       });
+      // 加入购物车
+      $("#id_add_to_cart").click(function (e) {
+          e.preventDefault();
+          $.post($(this).attr('data-url'), {
+              count:  1
+          }, function (rest) {
+              if(rest === 'ok') {
+                  $.toast('添加成功')
+              } else{
+                  $.toast('库存不足')
+              }
+          })
+      });
+      // 立即购买
       $("#id_buy_now").click(function() {
           $.post($(this).attr('data-url'), {
               count:  $("#id_input_buy_count").val()

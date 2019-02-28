@@ -50,6 +50,10 @@
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         });
+        // 返回按钮
+        $(".wy-header-icon-back").click(function () {
+            window.history.go(-1)
+        })
       });
     </script>
     <script src="{% static 'js/jquery-weui.js' %}"></script>
