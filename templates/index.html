@@ -1,0 +1,214 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block header %}
+  <title>积分商城首页</title>
+{% endblock %}
+{% block container %}
+    <header class="wy-header">
+      <div class="wy-header-title">积分商城</div>
+    </header>
+    <!--顶部搜索-->
+    <header class="weui-header">
+      <div class="weui-search-bar" id="searchBar">
+        <form class="weui-search-bar__form" method="get"
+           action="{% url 'mall:product_list' %}">
+          <div class="weui-search-bar__box">
+            <i class="weui-icon-search"></i>
+            <input
+              type="search"
+              class="weui-search-bar__input"
+              id="searchInput"
+              name="name"
+              placeholder="搜索您想要的商品"
+              required
+            />
+            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+          </div>
+          <label
+            class="weui-search-bar__label"
+            id="searchText"
+            style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);"
+          >
+            <i class="weui-icon-search"></i>
+            <span>搜索您想要的商品</span>
+          </label>
+        </form>
+        <a
+          href="javascript:"
+          class="weui-search-bar__cancel-btn"
+          id="searchCancel"
+          >取消</a
+        >
+      </div>
+    </header>
+    <!--主体-->
+    <div class="weui-content">
+      <!--顶部轮播-->
+      <div class="swiper-container swiper-banner">
+        <div class="swiper-wrapper">
+          {% for slider in slider_list %}
+          <div class="swiper-slide">
+            <a href="{{ slider.target_url|default_if_none:'javascript:;' }}"><img src="{{ slider.img.url }}"/></a>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <!--图标分类-->
+      <div class="weui-flex wy-iconlist-box">
+        <div class="weui-flex__item">
+          <a href="{% url 'mall:product_list' %}?tag=jxtj" class="wy-links-iconlist"
+            ><div class="img"><img src="/static/images/icon-link1.png" /></div>
+            <p>精选推荐</p></a
+          >
+        </div>
+        <div class="weui-flex__item">
+          <a href="{% url 'mall:product_list' %}?tag=jstj" class="wy-links-iconlist"
+            ><div class="img"><img src="/static/images/icon-link2.png" /></div>
+            <p>酒水专场</p></a
+          >
+        </div>
+        <div class="weui-flex__item">
+          <a href="../mine/templates/mine/all_orders.html" class="wy-links-iconlist"
+            ><div class="img"><img src="/static/images/icon-link3.png" /></div>
+            <p>订单管理</p></a
+          >
+        </div>
+        <div class="weui-flex__item">
+          <a href="javascript:alert('暂未开放')" class="wy-links-iconlist"
+            ><div class="img"><img src="/static/images/icon-link4.png" /></div>
+            <p>商家入驻</p></a
+          >
+        </div>
+      </div>
+      <!--新闻切换-->
+      <div class="wy-ind-news">
+        <i class="news-icon-laba"></i>
+        <div class="swiper-container swiper-news">
+          <div class="swiper-wrapper">
+            {% for news in news_list %}
+            <div class="swiper-slide">
+              <a href="{% url 'system:news_info' news.pk %}"
+                >{{ news.title }}</a
+              >
+            </div>
+            {% endfor %}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <a href="{% url 'system:news_list' %}" class="newsmore"
+          ><i class="news-icon-more"></i
+        ></a>
+      </div>
+      <!--酒水推荐-->
+      <div class="wy-module">
+        <div class="wy-module-tit"><span>酒水推荐</span></div>
+        <div class="wy-module-con">
+          <div
+            class="swiper-container swiper-jingxuan"
+            style="padding-top:34px;"
+          >
+            <div class="swiper-wrapper">
+              {% for item in jstj_list %}
+              <div class="swiper-slide">
+                <a href="{% url 'mall:product_info' item.uid %}">
+                    <img src="{{ item.img.url }}"/>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-pagination jingxuan-pagination"></div>
+          </div>
+        </div>
+      </div>
+      <!--精选推荐-->
+      <div class="wy-module">
+        <div class="wy-module-tit"><span>精选推荐</span></div>
+        <div class="wy-module-con">
+          <div
+            class="swiper-container swiper-jiushui"
+            style="padding-top:34px;"
+          >
+            <div class="swiper-wrapper">
+              {% for item in jxtj_list %}
+              <div class="swiper-slide">
+                <a href="{% url 'mall:product_info' item.uid %}">
+                    <img src="{{ item.img.url }}"/>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-pagination jingxuan-pagination"></div>
+          </div>
+        </div>
+      </div>
+      <!--猜你喜欢-->
+      <div class="wy-module">
+        <div class="wy-module-tit-line"><span>猜你喜欢</span></div>
+        <div class="wy-module-con">
+          <ul class="wy-pro-list clear">
+            {% for item in cnxh_list %}
+            <li>
+              <a href="{% url 'mall:product_info' item.uid %}">
+                <div class="proimg"><img src="{{ item.img.url }}" /></div>
+                <div class="protxt">
+                  <div class="name">
+                    {{ item.name }}
+                  </div>
+                  <div class="wy-pro-pri">¥<span>{{ item.price }}</span></div>
+                </div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="morelinks"><a href="../mall/templates/mall/pro_list.html">查看更多 >></a></div>
+        </div>
+      </div>
+    </div>
+
+    <!--底部导航-->
+    {% include 'base/footer.html' with tab='index' %}
+
+
+    <script src="{% static 'lib/jquery-2.1.4.js' %}"></script>
+    <script src="{% static 'lib/fastclick.js' %}"></script>
+    <script>
+      $(function() {
+        FastClick.attach(document.body);
+      });
+    </script>
+    <script src="{% static 'js/jquery-weui.js' %}"></script>
+
+{% endblock %}
+{% block footer %}
+    <script src="{% static 'js/swiper.js' %}"></script>
+    <script>
+      $('.swiper-banner').swiper({
+        loop: true,
+        autoplay: 3000
+      });
+      $('.swiper-news').swiper({
+        loop: true,
+        direction: 'vertical',
+        paginationHide: true,
+        autoplay: 30000
+      });
+      $('.swiper-jingxuan').swiper({
+        pagination: '.swiper-pagination',
+        loop: true,
+        paginationType: 'fraction',
+        slidesPerView: 3,
+        paginationClickable: true,
+        spaceBetween: 2
+      });
+      $('.swiper-jiushui').swiper({
+        pagination: '.swiper-pagination',
+        paginationType: 'fraction',
+        loop: true,
+        slidesPerView: 3,
+        slidesPerColumn: 2,
+        paginationClickable: true,
+        spaceBetween: 2
+      });
+    </script>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %}
+{% block header %}
+    <title>手机注册</title>
+    <style type="text/css">
+    .errorlist {
+        margin-left: 15px;
+    }
+    .weui-content {
+        height: 100vh;
+    }
+    </style>
+{% endblock %}
+{% block container %}
+    <!--主体-->
+    <header class="wy-header">
+      <div class="wy-header-icon-back"><span></span></div>
+      <div class="wy-header-title">手机注册</div>
+    </header>
+    <form action="." method="post" class="weui-content">
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label wy-lab">用户名</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              class="weui-input"
+              type="text"
+              name="username"
+              value="{{ form.username.value|default_if_none:'' }}"
+              placeholder="请输入用户名"
+            />
+          </div>
+        </div>
+         {{ form.username.errors }}
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label wy-lab">用户名</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              class="weui-input"
+              type="text"
+              name="nickname"
+              value="{{ form.nickname.value|default_if_none:'' }}"
+              placeholder="请输入昵称"
+            />
+          </div>
+        </div>
+         {{ form.nickname.errors }}
+        <div class="weui-cell weui-cell_vcode">
+          <div class="weui-cell__hd">
+            <label class="weui-label wy-lab">验证码</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              class="weui-input"
+              type="text"
+              name="verify_code"
+              placeholder="请输入验证码"
+            />
+          </div>
+          <div class="weui-cell__ft">
+            <img class="weui-vcode-img"
+                 data-src="{% url 'system:set_verify_code' %}"
+                 src="{% url 'system:set_verify_code' %}" />
+          </div>
+        </div>
+        {{ form.verify_code.errors }}
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label wy-lab">设置密码</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              class="weui-input"
+              type="password"
+              name="password"
+              value="{{ form.password.value|default_if_none:'' }}"
+              placeholder="请输入新密码"
+            />
+          </div>
+        </div>
+        {{ form.password.errors }}
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label wy-lab">确认密码</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              class="weui-input"
+              name="password2"
+              type="password"
+              placeholder="请再次输入新密码"
+            />
+          </div>
+        </div>
+        {{ form.password2.errors }}
+        {{ form.non_field_errors }}
+
+      <label for="weuiAgree" class="weui-agree">
+        <input
+          id="weuiAgree"
+          type="checkbox"
+          class="weui-agree__checkbox"
+          checked="checked"
+        />
+        <span class="weui-agree__text"
+          >阅读并同意<a href="javascript:void(0);">《注册协议》</a></span
+        >
+      </label>
+      {% csrf_token %}
+
+      <div class="weui-btn-area">
+        <button type="submit" class="weui-btn weui-btn_warn">注册并登陆</button>
+      </div>
+      <div class="weui-cells__tips t-c font-12">登陆账号为您输入的手机号码</div>
+    </form>
+{% endblock %}
+{% block footer %}
+    {{ supper }}
+    <script>
+       $(".weui-vcode-img").click(function() {
+           $(this).attr('src', $(this).attr('data-src') + '?t=' + new Date().getTime())
+       })
+    </script>
+{% endblock %}

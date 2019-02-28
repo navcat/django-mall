@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content=""/>
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/weui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-weui.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    {% block header %}
+      <title>积分商城首页</title>
+    {% endblock %}
+  </head>
+  <body ontouchstart class="container">
+    {% block container %}
+    {% endblock %}
+
+    <script src="{% static 'lib/jquery-2.1.4.js' %}"></script>
+    <script src="{% static 'lib/fastclick.js' %}"></script>
+    <script>
+      $(function() {
+        FastClick.attach(document.body);
+        {% if messages %}
+            {% for message in messages %}
+                $.toptip('{{ message }}', '{{ message.tags }}')
+            {% endfor %}
+        {% endif %}
+         function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        });
+      });
+    </script>
+    <script src="{% static 'js/jquery-weui.js' %}"></script>
+    {% block footer %}
+        {# 底部 #}
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,133 @@
+{% extends 'base/base.html' %}
+{% load accounting %}
+{% block header %}
+    <title>全部订单</title>
+{% endblock %}
+{% block container %}
+    <header class="wy-header wy-header-fixed">
+      <div class="wy-header-icon-back"><span></span></div>
+      <div class="wy-header-title">订单管理</div>
+    </header>
+    <div class="weui-content">
+      <div class="weui-tab">
+        <div
+          class="weui-navbar bar-fixed"
+          style="top:44px; height:44px; background:#fff;"
+        >
+          <a
+            class="weui-navbar__item proinfo-tab-tit font-14
+            {% if status == '' %} weui-bar__item--on{% endif %}"
+            href="{% url 'mine:order_list' %}"
+            >全部</a
+          >
+          <a class="weui-navbar__item proinfo-tab-tit font-14
+            {% if status == constants.TRANS_STATU_SUBMIT %} weui-bar__item--on{% endif %}"
+             href="{% url 'mine:order_list' %}?status={{ constants.TRANS_STATU_SUBMIT }}"
+            >待付款</a
+          >
+          <a class="weui-navbar__item proinfo-tab-tit font-14
+            {% if status == constants.TRANS_STATU_PAIED %} weui-bar__item--on{% endif %}"
+             href="{% url 'mine:order_list' %}?status={{ constants.TRANS_STATU_PAIED }}"
+            >待发货</a
+          >
+          <a class="weui-navbar__item proinfo-tab-tit font-14
+            {% if status == constants.TRANS_STATU_SENT %} weui-bar__item--on{% endif %}"
+             href="{% url 'mine:order_list' %}?status={{ constants.TRANS_STATU_SENT }}"
+            >待收货</a
+          >
+          <a class="weui-navbar__item proinfo-tab-tit font-14
+            {% ifequal status constants.TRANS_STATU_DONE %} weui-bar__item--on{% endifequal %}"
+             href="{% url 'mine:order_list' %}?status={{ constants.TRANS_STATU_DONE }}"
+            >待评价</a
+          >
+        </div>
+        <div class="weui-tab__bd proinfo-tab-con" style="padding-top:87px;">
+          <div class="weui-tab__bd-item weui-tab__bd-item--active">
+            {% for orderItem in object_list %}
+            <div class="weui-panel weui-panel_access">
+              <div class="weui-panel__hd">
+                <span>单号：{{ orderItem.sn }}</span
+                ><span class="ord-status-txt-ts fr">{{ orderItem.get_status_display }}</span>
+              </div>
+              <div class="weui-media-box__bd  pd-10">
+                 <!-- 订单商品列表 -->
+                {% for cartInfo in orderItem.carts.all %}
+                <div class="weui-media-box_appmsg ord-pro-list">
+                  <div class="weui-media-box__hd">
+                    <a href="{% url 'mall:product_info' cartInfo.product.uid %}"
+                      ><img
+                        class="weui-media-box__thumb"
+                        src="{{ cartInfo.img.url }}"
+                        alt=""
+                    /></a>
+                  </div>
+                  <div class="weui-media-box__bd">
+                    <h1 class="weui-media-box__desc">
+                      <a href="{% url 'mall:product_info' cartInfo.product.uid %}" class="ord-pro-link"
+                        >{{ cartInfo.name }}</a
+                      >
+                    </h1>
+                    <div class="clear mg-t-10">
+                      <div class="wy-pro-pri fl">
+                        ¥<em class="num font-15">{{ cartInfo.price }}</em>
+                      </div>
+                      <div class="pro-amount fr">
+                        <span class="font-13"
+                          >数量×<em class="name">{{ cartInfo.count }}</em></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="ord-statistics">
+                <span>共<em class="num">{{ orderItem.buy_count }}</em>件商品，</span>
+                <span class="wy-pro-pri"
+                  >总金额：¥<em class="num font-15">{{ orderItem.buy_amount|accounting_format }}</em></span
+                >
+                <span>(含运费<b>￥0.00</b>)</span>
+              </div>
+              <div class="weui-panel__ft">
+                <div
+                  class="weui-cell weui-cell_access weui-cell_link oder-opt-btnbox"
+                >
+                  <!-- 已完成的订单才能删除 -->
+                  {% if orderItem.status == constants.TRANS_STATU_DONE %}
+                  <a href="javascript:;" class="ords-btn-dele">删除订单</a
+                  >
+                  {% endif %}
+                  <!-- 未支付的订单显示 去支付 -->
+                  {% if orderItem.status == constants.TRANS_STATU_SUBMIT %}
+                  <a href="{% url 'mine:order_info' orderItem.sn %}" class="ords-btn-com">去支付</a
+                  >
+                  {% endif %}
+                   <a href="javascript:alert('功能开发中')" class="ords-btn-com">评价</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <script>
+      $(document).on('click', '.ords-btn-dele', function() {
+        $.confirm(
+          '您确定要删除此订单吗?',
+          '确认删除?',
+          function() {
+            $.toast('订单已经删除!');
+          },
+          function() {
+            //取消操作
+          }
+        );
+      });
+      $(document).on('click', '.receipt', function() {
+        $.alert('五星好评送蓝豆哦，赶快去评价吧！', '收货完成！');
+      });
+    </script>
+{%  endblock %}

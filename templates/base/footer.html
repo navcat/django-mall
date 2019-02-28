@@ -1,0 +1,29 @@
+<!--底部导航-->
+<div class="weui-tabbar wy-foot-menu">
+  <a href="{% url 'index' %}"
+     class="weui-tabbar__item {% ifequal tab 'index' %}weui-bar__item--on {% endifequal %}">
+    <div class="weui-tabbar__icon foot-menu-home"></div>
+    <p class="weui-tabbar__label">首页</p>
+  </a>
+  <a href="{% url 'classify' %}"
+     class="weui-tabbar__item {% ifequal tab 'classify' %}weui-bar__item--on {% endifequal %}">
+    <div class="weui-tabbar__icon foot-menu-list"></div>
+    <p class="weui-tabbar__label">分类</p>
+  </a>
+  <a href="{% url 'cart' %}"
+     class="weui-tabbar__item {% ifequal tab 'cart' %}weui-bar__item--on {% endifequal %}">
+    {% if cart_total.sum_count %}
+      <span
+      class="weui-badge"
+      style="position: absolute;top: -.4em;right: 1em;"
+      >{{ cart_total.sum_count }}</span>
+    {% endif %}
+    <div class="weui-tabbar__icon foot-menu-cart"></div>
+    <p class="weui-tabbar__label">购物车</p>
+  </a>
+  <a href="{% url 'mine_index' %}"
+     class="weui-tabbar__item {% ifequal tab 'mine' %}weui-bar__item--on {% endifequal %}">
+    <div class="weui-tabbar__icon foot-menu-member"></div>
+    <p class="weui-tabbar__label">我的</p>
+  </a>
+</div>

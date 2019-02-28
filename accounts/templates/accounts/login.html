@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block header %}
+    <title>用户登录</title>
+    <style type="text/css">
+        body{background:#323542;}
+    </style>
+{% endblock %}
+{% block container %}
+    <!--主体-->
+    <div class="login-box">
+      <div class="lg-title">欢迎登录积分商城</div>
+      <div class="login-form">
+        <form action="" method="post">
+          <div class="login-user-name common-div">
+            <span class="eamil-icon common-icon">
+              <img src="{% static 'images/eamil.png' %}" />
+            </span>
+            <input
+              type="text"
+              name="username"
+              value="{{ form.username.value|default_if_none:'' }}"
+              placeholder="请输入您的账号"
+            />
+          </div>
+          {{ form.username.errors }}
+          <div class="login-user-pasw common-div">
+            <span class="pasw-icon common-icon">
+              <img src="{% static 'images/password.png' %}" />
+            </span>
+            <input
+              type="password"
+              name="password"
+              value="{{ form.password.value|default_if_none:'' }}"
+              placeholder="请输入您的密码"
+            />
+          </div>
+          {{ form.password.errors }}
+          <div class="login-user-vcode common-div">
+              <div class="weui-cell__bd">
+                <input
+                  type="text"
+                  name="verify_code"
+                  placeholder="请输入验证码"
+                />
+              </div>
+              <div class="weui-cell__ft">
+                <img class="weui-vcode-img"
+                     style="width: 100%;height: 100%;"
+                     data-src="{% url 'system:set_verify_code' %}"
+                     src="{% url 'system:set_verify_code' %}" />
+              </div>
+            </div>{{ form.verify_code.errors }}
+          {{ form.non_field_errors }}
+          {% csrf_token %}
+          <button type="submit"class="login-btn common-div">登陆</button>
+          <a href="javascript:;" class="login-oth-btn common-div">微信登陆</a>
+          <a href="javascript:;" class="login-oth-btn common-div">QQ登陆</a>
+        </form>
+      </div>
+      <div class="forgets">
+        <a href="{% url 'accounts:change_password' %}">忘记密码？</a>
+        <a href="{% url 'accounts:sign_up' %}">免费注册</a>
+      </div>
+    </div>
+
+{% endblock %}
+{% block footer %}
+    {{ supper }}
+    {% if user.is_authenticated %}
+        <script>
+        $.toast("登录成功");
+        </script>
+    {% endif %}
+    <script>
+       $(".weui-vcode-img").click(function() {
+           $(this).attr('src', $(this).attr('data-src') + '?t=' + new Date().getTime())
+       })
+    </script>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block header %}
+  <title>购物车</title>
+{% endblock %}
+{% block container %}
+    <!--主体-->
+    <header class="wy-header">
+      <div class="wy-header-icon-back"><span></span></div>
+      <div class="wy-header-title">购物车</div>
+    </header>
+    <div class="weui-content">
+      {% for item in cart_list %}
+      {% with prodInfo=item.product %}
+      <div class="weui-panel weui-panel_access">
+        <div class="weui-panel__hd">
+          <span>官方自营</span
+          ><a href="javascript:;" class="wy-dele"></a>
+        </div>
+        <div class="weui-panel__bd">
+          <div class="weui-media-box_appmsg pd-10">
+            <div class="weui-media-box__hd check-w weui-cells_checkbox">
+              <label class="weui-check__label" for="cart-pto1">
+                <div class="weui-cell__hd cat-check">
+                  <input
+                    type="checkbox"
+                    class="weui-check"
+                    name="cartpro"
+                    id="cart-pto1"
+                    checked
+                  /><i class="weui-icon-checked"></i>
+                </div>
+              </label>
+            </div>
+            <div class="weui-media-box__hd">
+              <a href="{% url 'mall:product_info' prodInfo.uid %}"
+                ><img class="weui-media-box__thumb" src="{{ item.img.url }}" alt=""
+              /></a>
+            </div>
+            <div class="weui-media-box__bd">
+              <h1 class="weui-media-box__desc">
+                <a href="{% url 'mall:product_info' prodInfo.uid %}" class="ord-pro-link"
+                  >{{ item.name }}</a
+                >
+              </h1>
+              <div class="clear mg-t-10">
+                <div class="wy-pro-pri fl">
+                  ¥<em class="num font-15">{{ item.price }}</em>
+                </div>
+                <div class="pro-amount fr">
+                    x {{ item.count }}
+                    <!-- <div class="Spinner"></div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+      {% endfor %}
+    </div>
+    <!--底部导航-->
+    <div class="foot-black"></div>
+    <div class="weui-tabbar wy-foot-menu">
+      <div class="npd cart-foot-check-item weui-cells_checkbox allselect">
+        <label class="weui-cell allsec-well weui-check__label" for="all">
+          <div class="weui-cell__hd">
+            <input type="checkbox" checked class="weui-check" name="all-sec" id="all" />
+            <i class="weui-icon-checked"></i>
+          </div>
+          <div class="weui-cell__bd">
+            <p class="font-14">全选</p>
+          </div>
+        </label>
+      </div>
+      <div class="weui-tabbar__item  npd">
+        <p class="cart-total-txt">
+          合计：<i>￥</i><em class="num font-16" id="zong1">{{ cart_total.sum_amount|default_if_none:'0' }}</em>
+        </p>
+      </div>
+      <a href="{% url 'mine:order_submit' %}" class="red-color npd w-90 t-c">
+        <p class="promotion-foot-menu-label">去结算</p>
+      </a>
+    </div>
+
+{% endblock %}
+{% block footer %}
+    <script type="text/javascript" src="/static/js/jquery.Spinner.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $('.Spinner').Spinner({ value: 1, len: 3, max: 999 });
+      });
+    </script>
+    <!---全选按钮-->
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.allselect').click(function() {
+          if (
+            $(this)
+              .find('input[name=all-sec]')
+              .prop('checked')
+          ) {
+            $('input[name=cartpro]').each(function() {
+              $(this).prop('checked', true);
+            });
+          } else {
+            $('input[name=cartpro]').each(function() {
+              if ($(this).prop('checked')) {
+                $(this).prop('checked', false);
+              } else {
+                $(this).prop('checked', true);
+              }
+            });
+          }
+        });
+      });
+    </script>
+    <script>
+      $(document).on('click', '.wy-dele', function() {
+        $.confirm(
+          '您确定要把此商品从购物车删除吗?',
+          '确认删除?',
+          function() {
+            $.toast('文件已经删除!');
+          },
+          function() {
+            //取消操作
+          }
+        );
+      });
+    </script>
+{% endblock %}

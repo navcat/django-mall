@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% block header %}
+    <title>新闻列表</title>
+{% endblock %}
+{% block container %}
+    <!--主体-->
+    <header class="wy-header">
+      <div class="wy-header-icon-back"><span></span></div>
+      <div class="wy-header-title">新闻列表</div>
+    </header>
+    <div class="weui-content">
+      <div class="weui-cells wy-news-list">
+        {% for news in object_list %}
+        <a class="weui-cell weui-cell_access"
+           href="{% url 'system:news_info' news.pk %}">
+          <div class="weui-cell__bd">
+            <p>{{ news.title }}</p>
+          </div>
+          <div class="weui-cell__ft"></div>
+        </a>
+        {% endfor %}
+      </div>
+    <div class="weui-footer">
+      <p class="weui-footer__links">
+        <a href="javascript:void(0);" class="weui-footer__link">
+            当前第{{ page_obj.number }}页, 总共{{ paginator.num_pages }}页</a>
+        {% if page_obj.has_previous %}
+        <a href="{% url 'system:news_list' %}?page={{ page_obj.previous_page_number }}"
+           class="weui-footer__link">上一页</a>
+        {% else %}
+        <a href="javascript:window.alert('没有上一页了')"
+           class="weui-footer__link">上一页</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+         <a href="{% url 'system:news_list' %}?page={{ page_obj.next_page_number }}"
+            class="weui-footer__link">下一页</a>
+        {% else %}
+        <a href="javascript:window.alert('没有下一页了')"
+            class="weui-footer__link">下一页</a>
+        {% endif %}
+      </p>
+    </div>
+    </div>
+{% endblock %}

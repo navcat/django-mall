@@ -1,0 +1,126 @@
+# 用户状态
+USER_STATUS_ACTIVE = 1
+USER_STATUS_DELETED = 0
+
+USER_STATUS_CHOICES = (
+    (USER_STATUS_DELETED, '删除'),
+    (USER_STATUS_ACTIVE, '正常'),
+)
+
+USER_LEVEL_COMMON = 0
+USER_LEVEL_I = 1
+USER_LEVEL_II = 2
+USER_LEVEL_III = 3
+USER_LEVEL_IV = 4
+USER_LEVEL_V = 5
+USER_LEVEL_CHOICES = (
+    (USER_LEVEL_COMMON, '普通会员'),
+    (USER_LEVEL_I, '青铜会员'),
+    (USER_LEVEL_II, '白银会员'),
+    (USER_LEVEL_III, '黄金会员'),
+    (USER_LEVEL_IV, '铂金会员'),
+    (USER_LEVEL_V, '钻石会员'),
+)
+
+# 用户类型
+USER_TYPE_COMMON = 1
+USER_TYPE_CHANNEL = 2
+USER_TYPE_CHOICES = (
+    (USER_TYPE_COMMON, '普通用户'),
+    (USER_TYPE_CHANNEL, '渠道'),
+)
+
+# 第三方用户类型
+# LOGIN_THIRD_TYPE_SINA_WEIBO = 1
+# LOGIN_THIRD_TYPE_TENCENT_WEIBO = 2
+# LOGIN_THIRD_TYPE_IMEI = 3
+# LOGIN_THIRD_TYPE_PUSH_ID = 4
+LOGIN_THIRD_TYPE_QQ_APP = 5
+LOGIN_THIRD_TYPE_WECHAT_APP = 6
+LOGIN_THIRD_TYPES = (
+    # (LOGIN_THIRD_TYPE_SINA_WEIBO, '新浪微博账号'),
+    # (LOGIN_THIRD_TYPE_TENCENT_WEIBO, '腾讯微博账号'),
+    # (LOGIN_THIRD_TYPE_IMEI, '手机IMEI号'),
+    # (LOGIN_THIRD_TYPE_PUSH_ID, '推送ID'),
+    (LOGIN_THIRD_TYPE_QQ_APP, 'QQ客户端'),
+    (LOGIN_THIRD_TYPE_WECHAT_APP, '微信客户端'),
+)
+
+# 操作来源选项
+SOURCE_CHOICES = (
+    ('android', '安卓客户端'),
+    ('ios', '苹果客户端'),
+    ('wechat_app', '微信APP'),
+    ('qq_app', 'QQ APP'),
+    ('alipay_app', '支付宝APP'),
+    ('web', 'Web浏览器'),
+)
+
+
+# 商品类型
+PRODUCT_TYPE_VIRTUAL = 11    # 虚拟商品
+PRODUCT_TYPE_ACTUAL = 12     # 实物商品
+PRODUCT_TYPES = (
+    (PRODUCT_TYPE_VIRTUAL, '虚拟商品'),
+    (PRODUCT_TYPE_ACTUAL, '实物商品')
+)
+# 商品状态
+PRODUCT_STATU_SELL = 11
+PRODUCT_STATU_DONE = 12
+PRODUCT_STATU_LOST = 13
+PRODUCT_STATUS = (
+    (PRODUCT_STATU_SELL, '售卖中'),
+    (PRODUCT_STATU_DONE, '已售罄'),
+    (PRODUCT_STATU_LOST, '已下架'),
+)
+
+# 交易状态
+TRANS_STATU_INIT = 10
+TRANS_STATU_SUBMIT = 11
+TRANS_STATU_PAIED = 12
+TRANS_STATU_SENT = 13
+TRANS_STATU_DONE = 14
+TRANS_STATU_DELETED = 15
+TRANS_STATUS = (
+    (TRANS_STATU_INIT, '购物车'),
+    (TRANS_STATU_SUBMIT, '已提交'),
+    (TRANS_STATU_PAIED, '已支付'),
+    (TRANS_STATU_SENT, '已发货'),
+    (TRANS_STATU_DONE, '已完成'),
+    (TRANS_STATU_DELETED, '已删除'),
+)
+### 用户订单
+# 订单类型
+ORDER_TYPE_CHARGE = 11
+ORDER_TYPE_EXCHANGE = 12
+ORDER_TYPES = (
+    (ORDER_TYPE_CHARGE, '充值订单'),
+    (ORDER_TYPE_EXCHANGE, '积分兑换'),
+)
+
+# 支付方式
+PAY_TYPE_WECHAT = 11
+PAY_TYPE_ALIPAY = 12
+PAY_TYPE_COIN = 13
+ORDER_PAY_TYPES = (
+    (PAY_TYPE_WECHAT, '微信'),
+    (PAY_TYPE_ALIPAY, '支付宝'),
+    (PAY_TYPE_COIN, '金币抵扣'),
+)
+# 支付状态
+PAY_STATUS_SUBMIT = 10
+PAY_STATUS_PENDING = 11
+PAY_STATUS_SUCCESS = 12
+PAY_STATUS_CLOSED = 13
+PAY_STATUS = (
+    (PAY_STATUS_SUBMIT, '提交订单'),
+    (PAY_STATUS_PENDING, '支付中'),
+    (PAY_STATUS_SUCCESS, '交易成功'),
+    (PAY_STATUS_CLOSED, '交易关闭'),
+)
+
+# 轮播图位置
+SLIDER_TYPE_INDEX = 1
+SLIDER_TYPES_CHOICES = (
+    (SLIDER_TYPE_INDEX, '首页轮播'),
+)

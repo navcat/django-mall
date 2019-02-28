@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+{% block header %}
+    <title>编辑地址</title>
+{% endblock %}
+{% block container %}
+    <!--主体-->
+    <header class="wy-header">
+      <div class="wy-header-icon-back"><span></span></div>
+      <div class="wy-header-title">编辑地址</div>
+    </header>
+    <div class="weui-content">
+      <form action="." method="post">
+          {% csrf_token %}
+          <div class="weui-cells weui-cells_form wy-address-edit">
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label wy-lab">收件人</label>
+              </div>
+              <div class="weui-cell__bd">
+                <input
+                  class="weui-input"
+                  type="text"
+                  name="username"
+                  value="{{ form.username.value|default_if_none:'' }}"
+                  placeholder="请输入收件人"
+                />
+                  {{ form.username.errors }}
+              </div>
+            </div>
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label wy-lab">手机号</label>
+              </div>
+              <div class="weui-cell__bd">
+                <input
+                  class="weui-input"
+                  type="text"
+                  pattern="[0-9]*"
+                  name="phone"
+                  value="{{ form.phone.value|default_if_none:'' }}"
+                  placeholder="请输入手机号码"
+                />
+                  {{ form.phone.errors }}
+              </div>
+            </div>
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label for="name" class="weui-label wy-lab">所在地区</label>
+              </div>
+              <div class="weui-cell__bd">
+                <input
+                  class="weui-input"
+                  id="region"
+                  name="region"
+                  type="text"
+                  value="{{ form.region.value|default_if_none:'' }}"
+                  readonly=""
+                />
+                  {{ form.region.errors }}
+              </div>
+            </div>
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label wy-lab">详细地址</label>
+              </div>
+              <div class="weui-cell__bd">
+                <textarea
+                  class="weui-textarea"
+                  name="address"
+                  placeholder="请输入与详细地址"
+                >{{ form.address.value|default_if_none:'' }}</textarea>
+                  {{ form.address.errors }}
+                  {{ form.non_field_errors }}
+              </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+              <div class="weui-cell__bd">设为默认地址</div>
+              <div class="weui-cell__ft">
+                  {{ form.is_default }}
+{#                <input name="is_default"#}
+{#                       value="{{ form.is_default.value|default_if_none:'' }}"#}
+{#                       class="weui-switch"#}
+{#                       type="checkbox" />#}
+              </div>
+            </div>
+          </div>
+          <div class="weui-btn-area">
+            <button
+              class="weui-btn weui-btn_primary"
+              id="showTooltips"
+              type="submit"
+              >保存此地址</button>
+            {% if form.instance.pk %}
+            <a href="javascript:;" id="delete"
+               data-url="{% url 'accounts:address_delete' form.instance.pk %}"
+               class="weui-btn weui-btn_warn">删除此地址</a>
+            {% endif %}
+          </div>
+      </form>
+    </div>
+{% endblock %}
+{% block footer %}
+    <script type="text/javascript" src="/static/js/jquery.Spinner.js"></script>
+    <script src="/static/js/city-picker.js"></script>
+    <script>
+      $('#region').cityPicker({
+        title: '选择出发地',
+        onChange: function(picker, values, displayValues) {
+          console.log(values, displayValues);
+        }
+      });
+      $('#delete').click(function () {
+          var url = $(this).attr('data-url')
+          $.confirm({
+          title: '提示',
+          text: '确认删除该地址吗',
+          onOK: function () {
+            //点击确认
+              var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+              $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                });
+              $.post(url, {
+              }, function (rest) {
+                  if(rest === 'ok') {
+                      window.location.href = "{% url 'accounts:address_list' %}";
+                  }
+              })
+          },
+          onCancel: function () {
+          }
+        });
+      })
+
+    </script>
+{% endblock %}
